@@ -1,7 +1,7 @@
 // Import required packages
 const { Client } = require("guilded.js");
 const axios = require("axios"); // For HTTP requests to the Shapes API
-require("dotenv").config( { path: '/data/data/com.termux/files/home/test1/shapes-api/examples/social/shape-guilded/test1.env' } ); // To load environment variables from .env
+require("dotenv").config( { path: '/data/data/com.termux/files/home/test3/shapes-api/examples/social/shape-guilded/test3.env' } ); // To load environment variables from .env
 const fs = require('fs'); // For file system operations
 
 // --- Configuration ---
