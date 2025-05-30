@@ -1,7 +1,7 @@
 // Import required packages
 const { Client } = require("guilded.js");
 const axios = require("axios");
-require("dotenv").config( { path: '/data/data/com.termux/files/home/test4/GuildTest/test4.env' } );
+require("dotenv").config( { path: 'C:\KURO\Guild\blob\main\KURO.env' } );
 const fs = require('fs');
 
 // --- Configuration ---
@@ -251,8 +251,12 @@ client.on("ready", () => {
 });
 
 client.on("messageCreated", async (message) => {
-    // Ignore messages from bots and empty messages
-    if (message.createdById === client.user?.id || message.author?.type === "bot" || !message.content?.trim()) {
+    // Ignore messages from bots (including this bot and all other bots) and empty messages
+    if (message.createdById === client.user?.id || 
+        message.author?.type === "bot" || 
+        message.author?.bot === true || 
+        !message.content?.trim()) {
+        console.log(`[Message Ignored] Bot message from ${message.author?.name || 'Unknown'} (ID: ${message.createdById})`);
         return;
     }
 
