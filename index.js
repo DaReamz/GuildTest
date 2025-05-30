@@ -251,12 +251,38 @@ client.on("ready", () => {
 });
 
 client.on("messageCreated", async (message) => {
-    // Ignore messages from bots (including this bot and all other bots) and empty messages
-    if (message.createdById === client.user?.id || 
-        message.author?.type === "bot" || 
-        message.author?.bot === true || 
-        !message.content?.trim()) {
-        console.log(`[Message Ignored] Bot message from ${message.author?.name || 'Unknown'} (ID: ${message.createdById})`);
+    // Universal bot detection - ignore ALL bot messages
+    const isBot = message.createdById === client.user?.id || 
+                  message.author?.type === "bot" || 
+                  message.author?.bot === true ||
+                  message.type === "system" ||
+                  // Check if message is a webhook (common for bot integrations)
+                  message.webhook ||
+                  message.author?.webhook ||
+                  // Check if author is null/undefined (system messages, webhooks)
+                  !message.author ||
+                  // Check for common bot patterns in usernames
+                  (message.author?.name && (
+                      message.author.name.toLowerCase().includes('bot') ||
+                      message.author.name.toLowerCase().includes('webhook') ||
+                      message.author.name.endsWith('[BOT]') ||
+                      message.author.name.includes('🤖')
+                  )) ||
+                  // Check for common bot message patterns
+                  (message.content && (
+                      message.content.startsWith('🤖') ||
+                      message.content.startsWith('[BOT]') ||
+                      message.content.startsWith('**Bot') ||
+                      message.content.includes('I am a bot') ||
+                      // Pattern for messages that look like bot responses
+                      /^[A-Za-z0-9_-]+:\s/.test(message.content) // Matches "BotName: message" pattern
+                  ));
+    
+    // Ignore empty messages or bot messages
+    if (!message.content?.trim() || isBot) {
+        if (isBot) {
+            console.log(`[Message Ignored] Bot/System message from ${message.author?.name || 'Unknown'} (ID: ${message.createdById}) - Content: "${message.content?.substring(0, 50)}..."`);
+        }
         return;
     }
 
