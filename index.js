@@ -1,7 +1,7 @@
 // Import required packages
 const { Client } = require("guilded.js");
 const axios = require("axios");
-require("dotenv").config( { path: '/GuildTest/dan.env' } );
+require("dotenv").config( { path: 'GuildTest/dan.env' } );
 const fs = require('fs');
 
 // --- Configuration ---
